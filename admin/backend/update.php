@@ -19,8 +19,7 @@ if (isset($_FILES["foto"])) {
     $tipo = $_FILES["foto"]["type"];
     $imagen = addslashes($foto);
 } else {
-    echo "<script>alert('No has introducido una foto'); window.location.href = '..//ç4' +
- '*+8//h+kmnj/xº../index.php';</script>";
+    echo "<script>alert('No has introducido una foto'); window.location.href = '../../dashboard.php';</script>";
 }
 
 
