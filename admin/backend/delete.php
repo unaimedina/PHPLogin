@@ -1,8 +1,11 @@
 <?php
+if (!isset($_SESSION['user']) || !isset($_SESSION['password'])) {
+    header('Location: ../login.php');
+}
 
 $data = $_POST;
 
-$mysql = mysqli_connect("localhost", "root", "mysqlpassword", "demoASIX1", 3306);
+require_once "../../database/Connector.php";
 $query = "DELETE FROM alumne WHERE codiAlumne = " . $data['alumne'];
 
 echo $query;

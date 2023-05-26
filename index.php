@@ -1,28 +1,47 @@
 <html>
 <head>
-    <title>Index</title>
-    <!-- img to base64: https://www.base64-image.de/ -->
-    <meta charset="utf-8">
+    <title>Test</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/header.css">
+    <script src="css/script.js"></script>
 </head>
 <body>
-    <h1>Index</h1>
-    <a href="admin/login.php">Login</a>
+<nav>
+    <div class="site-title">Unai Medina</div>
+    <ul>
+        <li><a href="./admin/login.php">LOGIN</a></li>
+    </ul>
+</nav>
+<main style="text-align: center; margin-top: 50px;">
 
     <?php
-        $conn = mysqli_connect("localhost", "root", "mysqlpassword", "demoASIX1", 3306);
+    $conn = mysqli_connect("localhost", "root", "mysqlpassword", "demoASIX1", 3306);
 
-        $query = "SELECT * FROM alumne";
-        $result = mysqli_query($conn, $query);
+    $query = "SELECT * FROM alumne";
+    $result = mysqli_query($conn, $query);
 
+    if (mysqli_affected_rows($conn) == 0 || !isset($result)) {
+        echo "<div class='card'><h1>No hay usuarios</h1></div>";
+    } else {
         while ($row = mysqli_fetch_assoc($result)) {
-            echo "<p><b>Nombre:</b> " . $row['nom'] . "</p>";
-            echo "<p><b>Apellido:</b> " . $row['cognoms'] . "</p>";
-            echo "<p><b>Correo:</b> " . $row['correu'] . "</p>";
-            echo "<p><b>Contraseña:</b> " . $row['password'] . "</p>";
-            echo "<p><b>Descripción:</b> " . $row['descripcio'] . "</p>";
-            // Echo image blob
-            echo '<img width="150px" height="150px" src="data:'.$row['tipus'].';base64,'.base64_encode($row['foto']).'">';
+            $tipus = $row["tipus"];
+            $dadesImatge = $row["foto"];
+            echo '<div class="card">';
+            echo '<img src="data:' . $tipus . ';base64,' . base64_encode($dadesImatge) . '">';
+
+            echo '<h1>' . $row["nom"] . ' ' . $row['cognoms'] . '</h1>';
+            echo '<p><a href="#">' . $row["correu"] . '</a></p>';
+            // If description is longer than 100 characters, cut it and add "..."
+            if (strlen($row["descripcio"]) > 100) {
+                $row["descripcio"] = substr($row["descripcio"], 0, 100) . "...";
+            }
+
+            echo '<p>' . $row["descripcio"] . '</p>';
+            echo '</div>';
         }
+    }
+
     ?>
+</main>
 </body>
 </html>

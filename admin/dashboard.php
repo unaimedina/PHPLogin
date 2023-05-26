@@ -10,13 +10,13 @@ if (isset($_POST['salir'])) {
     header('Location: ../index.php');
 }
 
-// Get close session with hidden input
+require_once "../database/Connector.php";
 ?>
 
 <html>
 <head>
     <title>Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 <div id="container">
@@ -35,7 +35,7 @@ if (isset($_POST['salir'])) {
 <!-- Apartado 1: Insertar alumnos en la base de datos -->
 <div class="contenedor">
     <h1>Insertar usuarios</h1>
-    <form action="backend/insert.php" method="post">
+    <form action="backend/insert.php" method="post" enctype="multipart/form-data">
         <div>
             <label for="name">Nombre</label>
             <input type="text" name="name" id="name" required>
@@ -58,7 +58,7 @@ if (isset($_POST['salir'])) {
         </div>
         <div>
             <label for="foto">Foto</label>
-            <input type="file" name="foto" id="foto" accept="image/png, image/gif, image/jpeg">
+            <input type="file" name="foto" id="foto" accept="image/png, image/gif, image/jpeg" required>
         </div>
         <div style="text-align: center;">
             <input type="submit" value="Insert">
@@ -68,16 +68,17 @@ if (isset($_POST['salir'])) {
 <div style="margin-top: 25px;"></div>
 <div class="contenedor">
     <h1>Modificar usuarios</h1>
-    <form action="backend/update.php" method="post">
+    <form action="backend/update.php" method="post" enctype="multipart/form-data">
         <div>
             <label for="name">Nombre</label>
             <select name="name" id="name">
                 <?php
-                $sqlconn = mysqli_connect("localhost", "root", "mysqlpassword", "demoASIX1", 3306);
                 $sql = "SELECT * FROM alumne";
-                $result = mysqli_query($sqlconn, $sql);
+                $count = 1;
+                $result = mysqli_query($mysql, $sql);
                 while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<option value='" . $row['codiAlumne'] . "'>" . $row['nom'] . "</option>";
+                    echo "<option value='" . $row['codiAlumne'] . "'>" . $count . ". " . $row['nom'] . " " . $row['cognoms'] . "</option>";
+                    $count++;
                 }
                 ?>
             </select>
@@ -100,7 +101,8 @@ if (isset($_POST['salir'])) {
         </div>
         <div>
             <label for="foto">Foto</label>
-            <input type="file" name="foto" id="foto" accept="image/png, image/gif, image/jpeg"></div>
+            <input type="file" name="foto" id="foto" accept="image/png, image/gif, image/jpeg" required>
+        </div>
         <div style="text-align: center;">
             <input type="submit" value="Actualizar">
         </div>
@@ -114,11 +116,12 @@ if (isset($_POST['salir'])) {
             <label for="name">Nombre</label>
             <select name="alumne" id="name">
                 <?php
-                $sqlconn = mysqli_connect("localhost", "root", "mysqlpassword", "demoASIX1", 3306);
                 $sql = "SELECT * FROM alumne";
-                $result = mysqli_query($sqlconn, $sql);
+                $count = 1;
+                $result = mysqli_query($mysql, $sql);
                 while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<option value='" . $row['codiAlumne'] . "'>" . $row['nom'] . "</option>";
+                    echo "<option value='" . $row['codiAlumne'] . "'>" . $count . ". " . $row['nom'] . " " . $row['cognoms'] . "</option>";
+                    $count++;
                 }
                 ?>
             </select>
